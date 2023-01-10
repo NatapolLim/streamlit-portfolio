@@ -1,0 +1,171 @@
+2023-01-10 21:40:00,579:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2023-01-10 21:40:00,579:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2023-01-10 21:40:00,580:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2023-01-10 21:40:00,580:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2023-01-10 21:40:01,434:INFO:Soft dependency imported: prophet: 1.1.1
+2023-01-10 21:40:31,428:WARNING:/Users/natapollimpananuwat/miniforge3/envs/pycaret/lib/python3.8/site-packages/multimethod/__init__.py:315: FutureWarning: In a future version, `df.iloc[:, i] = newvals` will attempt to set the values inplace instead of always setting a new array. To retain the old behavior, use either `df[df.columns[i]] = newvals` or, if columns are non-unique, `df.isetitem(i, newvals)`
+  return func(*args, **kwargs)
+
+2023-01-10 21:40:58,928:INFO:PyCaret RegressionExperiment
+2023-01-10 21:40:58,928:INFO:Logging name: reg-default-name
+2023-01-10 21:40:58,928:INFO:ML Usecase: MLUsecase.REGRESSION
+2023-01-10 21:40:58,928:INFO:version 3.0.0.rc6
+2023-01-10 21:40:58,928:INFO:Initializing setup()
+2023-01-10 21:40:58,928:INFO:self.USI: 51ca
+2023-01-10 21:40:58,928:INFO:self._variable_keys: {'fold_groups_param', 'X', 'data', 'exp_name_log', 'gpu_n_jobs_param', 'y_test', 'y_train', '_available_plots', 'memory', 'html_param', 'seed', 'target_param', 'X_test', 'n_jobs_param', 'pipeline', 'gpu_param', 'transform_target_param', 'fold_shuffle_param', 'logging_param', 'idx', 'X_train', 'fold_generator', 'exp_id', '_ml_usecase', 'y', 'log_plots_param', 'USI'}
+2023-01-10 21:40:58,928:INFO:Checking environment
+2023-01-10 21:40:58,928:INFO:python_version: 3.8.15
+2023-01-10 21:40:58,928:INFO:python_build: ('default', 'Nov 22 2022 08:49:06')
+2023-01-10 21:40:58,928:INFO:machine: arm64
+2023-01-10 21:40:58,928:INFO:platform: macOS-13.0.1-arm64-arm-64bit
+2023-01-10 21:40:58,928:INFO:Memory: svmem(total=17179869184, available=3716300800, percent=78.4, used=5969199104, free=176553984, active=3554017280, inactive=3519021056, wired=2415181824)
+2023-01-10 21:40:58,928:INFO:Physical Core: 8
+2023-01-10 21:40:58,928:INFO:Logical Core: 8
+2023-01-10 21:40:58,928:INFO:Checking libraries
+2023-01-10 21:40:58,928:INFO:System:
+2023-01-10 21:40:58,928:INFO:    python: 3.8.15 | packaged by conda-forge | (default, Nov 22 2022, 08:49:06)  [Clang 14.0.6 ]
+2023-01-10 21:40:58,928:INFO:executable: /Users/natapollimpananuwat/miniforge3/envs/pycaret/bin/python
+2023-01-10 21:40:58,928:INFO:   machine: macOS-13.0.1-arm64-arm-64bit
+2023-01-10 21:40:58,928:INFO:PyCaret required dependencies:
+2023-01-10 21:40:58,929:INFO:                 pip: 22.3.1
+2023-01-10 21:40:58,929:INFO:          setuptools: 60.10.0
+2023-01-10 21:40:58,929:INFO:             pycaret: 3.0.0rc6
+2023-01-10 21:40:58,929:INFO:             IPython: 8.8.0
+2023-01-10 21:40:58,929:INFO:          ipywidgets: 8.0.4
+2023-01-10 21:40:58,929:INFO:                tqdm: 4.64.1
+2023-01-10 21:40:58,929:INFO:               numpy: 1.22.4
+2023-01-10 21:40:58,929:INFO:              pandas: 1.5.2
+2023-01-10 21:40:58,929:INFO:              jinja2: 3.1.2
+2023-01-10 21:40:58,929:INFO:               scipy: 1.8.1
+2023-01-10 21:40:58,929:INFO:              joblib: 1.2.0
+2023-01-10 21:40:58,929:INFO:             sklearn: 1.1.3
+2023-01-10 21:40:58,929:INFO:                pyod: 1.0.7
+2023-01-10 21:40:58,929:INFO:            imblearn: 0.10.1
+2023-01-10 21:40:58,929:INFO:   category_encoders: 2.5.1.post0
+2023-01-10 21:40:58,929:INFO:            lightgbm: 3.3.3
+2023-01-10 21:40:58,929:INFO:               numba: 0.56.4
+2023-01-10 21:40:58,929:INFO:            requests: 2.28.1
+2023-01-10 21:40:58,929:INFO:          matplotlib: 3.6.2
+2023-01-10 21:40:58,929:INFO:          scikitplot: 0.3.7
+2023-01-10 21:40:58,929:INFO:         yellowbrick: 1.5
+2023-01-10 21:40:58,929:INFO:              plotly: 5.11.0
+2023-01-10 21:40:58,929:INFO:             kaleido: 0.2.1
+2023-01-10 21:40:58,929:INFO:         statsmodels: 0.13.5
+2023-01-10 21:40:58,929:INFO:              sktime: 0.14.1
+2023-01-10 21:40:58,929:INFO:               tbats: 1.1.2
+2023-01-10 21:40:58,929:INFO:            pmdarima: 2.0.2
+2023-01-10 21:40:58,929:INFO:              psutil: 5.9.4
+2023-01-10 21:40:58,929:INFO:PyCaret optional dependencies:
+2023-01-10 21:41:01,599:INFO:                shap: 0.41.0
+2023-01-10 21:41:01,599:INFO:           interpret: 0.3.0
+2023-01-10 21:41:01,599:INFO:                umap: 0.1.1
+2023-01-10 21:41:01,599:INFO:    pandas_profiling: 3.6.2
+2023-01-10 21:41:01,599:INFO:  explainerdashboard: 0.4.1.1
+2023-01-10 21:41:01,599:INFO:             autoviz: 0.1.58
+2023-01-10 21:41:01,599:INFO:           fairlearn: 0.8.0
+2023-01-10 21:41:01,599:INFO:             xgboost: 1.7.2
+2023-01-10 21:41:01,599:INFO:            catboost: 1.1.1
+2023-01-10 21:41:01,599:INFO:              kmodes: 0.12.2
+2023-01-10 21:41:01,599:INFO:             mlxtend: 0.21.0
+2023-01-10 21:41:01,599:INFO:       statsforecast: 1.4.0
+2023-01-10 21:41:01,599:INFO:        tune_sklearn: 0.4.5
+2023-01-10 21:41:01,599:INFO:                 ray: 2.2.0
+2023-01-10 21:41:01,600:INFO:            hyperopt: 0.2.7
+2023-01-10 21:41:01,600:INFO:              optuna: 3.0.5
+2023-01-10 21:41:01,600:INFO:               skopt: Not installed
+2023-01-10 21:41:01,600:INFO:              mlflow: 2.1.1
+2023-01-10 21:41:01,600:INFO:              gradio: 3.15.0
+2023-01-10 21:41:01,600:INFO:             fastapi: 0.88.0
+2023-01-10 21:41:01,600:INFO:             uvicorn: 0.20.0
+2023-01-10 21:41:01,600:INFO:              m2cgen: 0.10.0
+2023-01-10 21:41:01,600:INFO:           evidently: 0.2.1
+2023-01-10 21:41:01,600:INFO:                nltk: 3.8.1
+2023-01-10 21:41:01,600:INFO:            pyLDAvis: 3.3.1
+2023-01-10 21:41:01,600:INFO:              gensim: 4.3.0
+2023-01-10 21:41:01,600:INFO:               spacy: 3.4.4
+2023-01-10 21:41:01,600:INFO:           wordcloud: 1.8.2.2
+2023-01-10 21:41:01,600:INFO:            textblob: 0.17.1
+2023-01-10 21:41:01,600:INFO:               fugue: 0.7.3
+2023-01-10 21:41:01,600:INFO:           streamlit: 1.16.0
+2023-01-10 21:41:01,600:INFO:             prophet: 1.1.1
+2023-01-10 21:41:01,600:INFO:None
+2023-01-10 21:41:01,600:INFO:Set up data.
+2023-01-10 21:41:01,608:INFO:Set up train/test split.
+2023-01-10 21:41:01,614:INFO:Set up index.
+2023-01-10 21:41:01,614:INFO:Set up folding strategy.
+2023-01-10 21:41:01,614:INFO:Assigning column types.
+2023-01-10 21:41:01,616:INFO:Engine successfully changes for model 'lr' to 'sklearn'.
+2023-01-10 21:41:01,616:INFO:Engine for model 'lasso' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,620:INFO:Engine for model 'ridge' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,623:INFO:Engine for model 'en' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,659:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,679:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,679:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:01,781:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:01,812:INFO:Engine for model 'lasso' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,814:INFO:Engine for model 'ridge' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,816:INFO:Engine for model 'en' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,843:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,862:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,863:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:01,864:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:01,864:INFO:Engine successfully changes for model 'lasso' to 'sklearn'.
+2023-01-10 21:41:01,866:INFO:Engine for model 'ridge' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,868:INFO:Engine for model 'en' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,893:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,913:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,913:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:01,914:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:01,916:INFO:Engine for model 'ridge' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,918:INFO:Engine for model 'en' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,943:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,962:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,963:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:01,964:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:01,964:INFO:Engine successfully changes for model 'ridge' to 'sklearn'.
+2023-01-10 21:41:01,968:INFO:Engine for model 'en' has not been set explicitly, hence returning None.
+2023-01-10 21:41:01,993:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,012:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,013:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:02,014:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:02,018:INFO:Engine for model 'en' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,043:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,063:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,063:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:02,064:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:02,064:INFO:Engine successfully changes for model 'en' to 'sklearn'.
+2023-01-10 21:41:02,094:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,113:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,113:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:02,114:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:02,143:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,163:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,163:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:02,164:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:02,164:INFO:Engine successfully changes for model 'knn' to 'sklearn'.
+2023-01-10 21:41:02,193:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,213:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:02,214:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:02,243:INFO:Engine for model 'svm' has not been set explicitly, hence returning None.
+2023-01-10 21:41:02,263:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:02,264:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:02,264:INFO:Engine successfully changes for model 'svm' to 'sklearn'.
+2023-01-10 21:41:02,314:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:02,316:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:02,365:INFO:Soft dependency imported: xgboost: 1.7.2
+2023-01-10 21:41:02,366:INFO:Soft dependency imported: catboost: 1.1.1
+2023-01-10 21:41:02,366:INFO:Preparing preprocessing pipeline...
+2023-01-10 21:41:02,366:INFO:Set up label encoding.
+2023-01-10 21:41:02,366:INFO:Set up simple imputation.
+2023-01-10 21:41:02,368:INFO:Set up encoding of ordinal features.
+2023-01-10 21:41:02,368:INFO:Set up encoding of categorical features.
+2023-01-10 21:52:28,318:WARNING:/Users/natapollimpananuwat/miniforge3/envs/pycaret/lib/python3.8/site-packages/multimethod/__init__.py:315: FutureWarning: In a future version, `df.iloc[:, i] = newvals` will attempt to set the values inplace instead of always setting a new array. To retain the old behavior, use either `df[df.columns[i]] = newvals` or, if columns are non-unique, `df.isetitem(i, newvals)`
+  return func(*args, **kwargs)
+
+2023-01-10 23:27:51,458:WARNING:/Users/natapollimpananuwat/miniforge3/envs/pycaret/lib/python3.8/site-packages/multimethod/__init__.py:315: FutureWarning: In a future version, `df.iloc[:, i] = newvals` will attempt to set the values inplace instead of always setting a new array. To retain the old behavior, use either `df[df.columns[i]] = newvals` or, if columns are non-unique, `df.isetitem(i, newvals)`
+  return func(*args, **kwargs)
+
