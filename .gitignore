@@ -1,2 +1,7 @@
 notebook_test.ipynb
 dataset.csv
+logs.log
+.DS_Store
+.ipynb_checkpoints
+__pycache__
+test.ipynb
