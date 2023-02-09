@@ -3,5 +3,7 @@ dataset.csv
 logs.log
 .DS_Store
 .ipynb_checkpoints
-__pycache__
+.vscode
 test.ipynb
+apps/__pycache__
+tests/__pycache__
