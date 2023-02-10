@@ -1,0 +1,57 @@
+ul {
+    padding-left: 1.5rem;
+  }
+
+h1 {
+    text-align:center;
+    padding: 0;
+}
+h2 {
+    text-align: center;
+}
+h4 {
+    text-align:center;
+}
+
+h5 {
+    text-align:center;
+}
+
+#footer {
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+
+}
+
+#image {
+    align-items: center;
+}
+#MainMenu {
+    visibility: hidden;
+}
+footer {
+    visibility: hidden;
+}
+header {
+    visibility: hidden;
+}
+
+hr.style1 { 
+    border: 0; 
+    height: 1px; 
+    background-image: -webkit-linear-gradient(left, #f0f0f000, #999999, #f0f0f000);
+
+}
+
+#head_project {
+    text-align: left;
+    font-size: 20px;
+    padding-left: 15px;
+}
+
+kbd {
+    background-color: rgba(143, 143, 143, 0.275)!important;
+    font-size: 15px;
+    padding: 3px!important;
+}
