@@ -39,13 +39,32 @@ class MultiApp:
         })
 
     def run(self):
-
-        st.sidebar.title("Contents")
+        
+        st.sidebar.title("Portfolio")
         st.sidebar.subheader("by Natapol Lim")
-               
-        app = st.sidebar.radio(
-            '',
-            self.apps,
-            format_func=lambda app: app['title'])
+        
+        # if not st.session_state:
+        #     st.session_state.apps = [(i,app['title'], app['function']) for i, app in enumerate(self.apps)]
+        #     st.session_state.page = 0
 
+        # page = st.sidebar.selectbox(
+        #     'Topics',
+        #     st.session_state.apps,
+        #     format_func=lambda app:app[1],
+        #     key='test_pages',
+        #     # index=st.session_state.page
+        #     # on_change=reset_page,
+        #     # args=(st.session_state.page,)
+        #     )
+            
+        # st.session_state.page = page[0]
+        # st.markdown(st.session_state.page)
+        # st.session_state.apps[st.session_state.page][2]()
+
+        app = st.sidebar.selectbox(
+            'Topics',
+            self.apps,
+            format_func=lambda app: app['title'],
+            )
         app['function']()
+

@@ -3,12 +3,13 @@ from multiapp import MultiApp
 import streamlit as st
 
 st.set_page_config(
-    page_title="Yoyo-profile",
-    layout='wide'
+    page_title="Yoyo-Profile",
+    layout='centered',
+    page_icon= "🤩",
 )
 app = MultiApp()
 
-# app.add_app("Profile Page", profile.app)
-app.add_app("Face Blur", face_blur.app)
+app.add_app("Profile Page", profile.app)
+app.add_app("Face Blur Project", face_blur.app)
 
 app.run()

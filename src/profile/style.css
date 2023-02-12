@@ -40,8 +40,13 @@ header {
 hr.style1 { 
     border: 0; 
     height: 1px; 
-    background-image: -webkit-linear-gradient(left, #f0f0f000, #999999, #f0f0f000);
+    background-image: -webkit-linear-gradient(left, #f0f0f000, #ffffff, #f0f0f000);
+}
 
+hr.style2 { 
+    border: 0; 
+    height: 1px; 
+    background-image: -webkit-linear-gradient(left, #f0f0f000, #ffffff45, #f0f0f000);
 }
 
 #head_project {

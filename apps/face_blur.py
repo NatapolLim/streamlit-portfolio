@@ -8,8 +8,8 @@ import torch
 import time
 import cv2
 
-EXAMPLE_IMG_PATH = "data/face_blur/example1.jpg"
-BLUR_IMG_PATH = "data/face_blur/Blur_img.jpg"
+EXAMPLE_IMG_PATH = "src/face_blur/example1.jpg"
+BLUR_IMG_PATH = "src/face_blur/Blur_img.jpg"
 
 @st.cache(suppress_st_warning=True)
 def processing_img(img, threshold=0.8, min_face_size=50):
@@ -47,7 +47,7 @@ def get_label_img(img, boxes):
 def get_faces_img(img, boxes, img_size = 160):
     faces_img = []
     img = np.array(img)
-    boxes = resize_box(img.shape, boxes, img_size, margin =20)
+    boxes = resize_box(img.shape, boxes, margin =10)
 
     for box in boxes:
         x1, y1, x2, y2 = box
@@ -62,7 +62,7 @@ def get_faces_img(img, boxes, img_size = 160):
 
 def get_blur_img(img, boxes, select_lis, ksize):
     img = np.array(img)
-    boxes = resize_box(img.shape, boxes, img_size=160, margin =20)
+    boxes = resize_box(img.shape, boxes, margin =20)
     for (selected, _), box in zip(select_lis, boxes):
         if not selected:
                 continue
@@ -79,7 +79,7 @@ def to_select_state():
 def app():
     st.title("Face Blur")
     
-    if not st.session_state:
+    if 'state' not in st.session_state:
         img = Image.open(EXAMPLE_IMG_PATH)
         st.session_state.state = 'upload'
         st.session_state.img = img

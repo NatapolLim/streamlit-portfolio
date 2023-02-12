@@ -32,7 +32,7 @@ def txt(a, b):
     with col1:
         st.markdown(a, unsafe_allow_html=True)
     with col2:
-        st.markdown(b)
+        st.markdown(b, unsafe_allow_html=True)
 
 def txt_skills(topic, skills):
     col1, col2 = st.columns([1,3])
@@ -92,7 +92,7 @@ def app():
     #Profile Image
     c1, c2, c3 = st.columns((1,1,1))
     c1.write("  ")
-    c2.image("src/profile/profile_img_2.png")
+    c2.image("src/profile/profile_img.png")
     c3.write("  ")
 
     #Profile summary
@@ -123,8 +123,7 @@ def app():
     st.markdown('''### Projects''')
 
     with st.container():
-        
-        st.markdown("""<p id="head_project">Face Blur app</p>""", unsafe_allow_html=True)
+        txt("""<p id="head_project">Face Blur app</p>""", "FEB 2023")
         _, c1, c2 = st.columns((0.1,1,2))
         c1.image("src/profile/face_blur_img.png")
         c2.markdown("""
@@ -132,8 +131,12 @@ def app():
         - asdf
         - asdf
         """)
+        c2.button("Read More")
+
+        st.markdown("""<hr class="style2">""", unsafe_allow_html=True)
+
     with st.container():
-        st.markdown("""<p id="head_project">Real-time sales analytics and implement ETL pipeline for retail store </p>""", unsafe_allow_html=True)
+        txt("""<p id="head_project">Real-time sales analytics and implement ETL pipeline for retail store </p>""", "DEC 2022")
         _, c1, c2 = st.columns((0.1,1,2))
         c2.markdown("""
         - Generate mock transactions to the <kbd>Kafka</kbd> topic and store the data in <kbd>S3 Bucket</kbd>
@@ -142,10 +145,34 @@ def app():
         - Performed end-to-end <kbd>ETL pipeline</kbd> to extract data from landing zone <kbd>S3 Bucket</kbd>, transform date with features engineering using <kbd>PySpark</kbd> and load the data into processed folder with parquet format using <kbd>Airflow</kbd> to orchestrate the pipeline 
         """, unsafe_allow_html=True)
         # st.markdown("""<kbd>Use</kbd>, <kbd>Use</kbd>""", unsafe_allow_html=True)
+        st.markdown("""<hr class="style2">""", unsafe_allow_html=True)
     
+    with st.container():
+        txt("""<p id="head_project">Customer Segmentation of cosmetic transaction</p>""", "Feb - Apr 2022")
+        _, c1, c2 = st.columns((0.1,1,2))
 
+        c2.markdown("""
+        - Implement data cleaning and data preprocessing to raw data
+        - Apply <kbd>Cohort Analysis</kbd> to analyze customer behavior and <kbd>RFM Analysis</kbd> to identify the customer segment
+        - Visualize the top 3 category products in each segment and the correlation between category products for cross selling strategy
+        """, unsafe_allow_html=True)
 
+        st.markdown("""<hr class="style2">""", unsafe_allow_html=True)
 
+    with st.container():
+        txt("""<p id="head_project">Structure designed and built the mobile base robot</p>""", "Nov 2021 - Feb 2022")
+        _, c1, c2 = st.columns((0.1,1,2))
+        
+        c2.markdown("""
+        - Determine fabrication process of components and choose standardized parts for cost reduction 
+        - Designed parts using <kbd>Fusion 360</kbd> and applied with <kbd>Finite Element Analysis</kbd> for validation designing
+        - Built <kbd>3D Printing</kbd> rapid prototypes for proofs-of-concept before CNC
+        - Redesigned parts to minimize size as possible for the CNC and improved <kbd>Design For Assemble</kbd>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""<hr class="style2">""", unsafe_allow_html=True)
+
+    
 
 
 
