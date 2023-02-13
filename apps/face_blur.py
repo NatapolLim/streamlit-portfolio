@@ -77,7 +77,7 @@ def to_select_state():
     st.session_state.state = 'select'
     
 def app():
-    st.title("Face Blur")
+    st.markdown("## Face Blur", unsafe_allow_html=True)
     
     if 'state' not in st.session_state:
         img = Image.open(EXAMPLE_IMG_PATH)
@@ -89,10 +89,6 @@ def app():
         st.session_state.n_faces = 0
         st.session_state.blur_img = img
         st.session_state.caption = 'Example Image'
-
-    # with st.sidebar:
-    #     st.subheader('State')
-    #     st.write(st.session_state.state)
 
     #layout  
     step_1 = st.expander("Upload Your Image", expanded = False)
@@ -204,10 +200,8 @@ def app():
             st.session_state.blur_img = blur_img
             blur_img.save(BLUR_IMG_PATH)
             st.session_state.state = 'download'
-
-        
-    if st.session_state.state=='download': 
-
+       
+    if st.session_state.state=='download':
         step_4.image(st.session_state.blur_img)
 
         with open(BLUR_IMG_PATH, 'rb') as file:

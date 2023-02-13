@@ -52,11 +52,24 @@ hr.style2 {
 #head_project {
     text-align: left;
     font-size: 20px;
-    padding-left: 15px;
 }
 
 kbd {
     background-color: rgba(143, 143, 143, 0.275)!important;
+    color: #ffffff;
     font-size: 15px;
     padding: 3px!important;
 }
+
+[data-testid="stSidebar"] {
+    background-color: #3c3c3c !important;
+    visibility: visible;
+    width: 300px!important;
+}
+
+#test {
+    background-color: #dddddd54 !important;
+}
+
+
+

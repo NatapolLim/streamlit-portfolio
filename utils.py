@@ -4,7 +4,11 @@
 # import pandas as pd
 # import numpy as np
 # import torch
+# import streamlit as st
+import base64
 import cv2
+import os
+
 # import os
 
 #Face Blur
@@ -27,6 +31,28 @@ def gauss_blur_face(box, img, size):
     img[y1:y2, x1:x2] = roi
     return img
 
+def img_to_bin(img_path):
+    with open(img_path, "rb") as file:
+        contents = file.read()
+        img_bin = base64.b64encode(contents).decode("utf-8")
+    return img_bin
+
+# def html_display_gif(img_path):
+#     img_bin = img_to_bin(img_path)
+#     html_code = f'''<img src="data:image/gif;base64,{img_bin}" width=200>''',
+#     return html_code
+
+def html_display_img_with_href(img_path, target_url, size=30, circle=False):
+    img_cls= ''
+    if circle:
+        img_cls = "rounded-circle"
+    img_format = os.path.splitext(img_path)[-1].replace('.', '')
+    bin_str = img_to_bin(img_path)
+    html_code = f'''
+        <a href="{target_url}">
+            <img class="{img_cls}" src="data:image/{img_format};base64,{bin_str}" width="{size}" height="{size}"/>
+        </a>'''
+    return html_code
 # #Not use
 # TEMP_FILES_DIR = "data/face_recognition/temp"
 # UPLOAD_IMG_PATH = "data/face_recognition/temp/tmp_img.jpg"
