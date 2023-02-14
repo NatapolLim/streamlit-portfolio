@@ -1,5 +1,7 @@
 from facenet_pytorch import MTCNN
+from streamlit_option_menu import option_menu
 from utils import resize_box, gauss_blur_face, footer
+import extra_streamlit_components as stx
 from PIL import Image, ImageDraw
 import streamlit as st
 import pandas as pd
@@ -82,155 +84,180 @@ def to_state(state):
     st.session_state.state = state
 
 
+#Head
 st.markdown("## Face Blur", unsafe_allow_html=True)
 
-if 'state' not in st.session_state:
-    img = Image.open(EXAMPLE_IMG_PATH)
-    st.session_state.state = 'upload'
-    st.session_state.img = img
-    st.session_state.label_img = img
-    st.session_state.boxes = None
-    st.session_state.faces_img = None
-    st.session_state.n_faces = 0
-    st.session_state.blur_img = img
-    st.session_state.caption = 'Example Image'
 
-#layout  
-step_1 = st.expander("Upload Your Image", expanded = False)
-step_2 = st.expander("Detected Face Output", expanded = True)
-step_3 = st.expander("Select Faces to Blur", expanded = True)
-step_4 = st.expander("Blured Image", expanded = True)
+choose = option_menu("Input Options", ['Image','Video','YouTube Link'],
+                        icons=['image', 'camera-video','youtube'],
+                        menu_icon=None, default_index=0,
+                        styles={
+        "container": {"padding": "5!important", "background-color": "#ffffff00"},
+        "icon": {"color": "white", "font-size": "25px"}, 
+        "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#dddddd30"},
+        "nav-link-selected": {"background-color": "#dddddd60"},
+        },
+        orientation='horizontal',
+        key='input_option'
+        )
 
-col1, col2 = step_2.columns((3,1))
-display_main_img = col1.empty()
-display_n_faces = col2.empty()
-
-file = step_1.file_uploader("", type=['jpg'], on_change=to_state, args=('upload',))
-if file:
-    img = Image.open(file)
-    if st.session_state.state=='upload':
-        st.session_state.caption='Uploaded Image'
+if choose == 'Image':
+    
+    if 'state' not in st.session_state:
+        img = Image.open(EXAMPLE_IMG_PATH)
+        st.session_state.state = 'upload'
         st.session_state.img = img
-        st.session_state.blur_img = img
+        st.session_state.label_img = img
+        st.session_state.boxes = None
+        st.session_state.faces_img = None
         st.session_state.n_faces = 0
+        st.session_state.blur_img = img
+        st.session_state.caption = 'Example Image'
 
-img = st.session_state.img
-n_faces = st.session_state.n_faces
+    #layout  
+    step_1 = st.expander("Upload Your Image", expanded = False)
+    step_2 = st.expander("Detected Face Output", expanded = True)
+    step_3 = st.expander("Select Faces to Blur", expanded = True)
+    step_4 = st.expander("Blured Image", expanded = True)
 
-display_main_img.image(img, caption=st.session_state.caption)
-display_n_faces.metric("Detected Faces", value = n_faces)
+    col1, col2 = step_2.columns((3,1))
+    display_main_img = col1.empty()
+    display_n_faces = col2.empty()
 
+    file = step_1.file_uploader("", type=['jpg'], on_change=to_state, args=('upload',))
+    if file:
+        img = Image.open(file)
+        if st.session_state.state=='upload':
+            st.session_state.caption='Uploaded Image'
+            st.session_state.img = img
+            st.session_state.blur_img = img
+            st.session_state.n_faces = 0
 
-with st.sidebar:
-    st.subheader("Face Detect Config")
-    threshold = st.slider(
-        "Confidence",
-        min_value=50,
-        max_value= 99,
-        value=80,
-        step=1)
-    min_face_size = st.slider(
-        'Minimum Face Size in the Image',
-        min_value=10,
-        max_value=100,
-        value=50,
-        step=1
-    )
-    st.caption('Click "Process" button for apply config values')
-    
-if step_2.button('Process', on_click=to_state, args=('select',)):
-    boxes= processing_img(img, threshold=threshold/100, min_face_size=min_face_size)
-    if boxes is None:
-        st.error('Image have no face!, please upload new Image')
-        st.session_state.state = 'error'
-    else:
-        label_img = get_label_img(img, boxes)
-        faces_img = get_faces_img(img, boxes)
-        n_faces = len(boxes)
-
-        st.session_state.boxes = boxes
-        st.session_state.faces_img = faces_img
-        st.session_state.label_img = label_img
-        st.session_state.n_faces = n_faces
-        st.session_state.caption = 'Labeled Image'
-
-
-if st.session_state.state!='upload' and st.session_state.state!='error':
     img = st.session_state.img
-    boxes = st.session_state.boxes
-    faces_img = st.session_state.faces_img
-    label_img = st.session_state.label_img
     n_faces = st.session_state.n_faces
-    blur_img = st.session_state.blur_img
-    
+
+    display_main_img.image(img, caption=st.session_state.caption)
     display_n_faces.metric("Detected Faces", value = n_faces)
-    display_main_img.image(label_img, caption=st.session_state.caption)
 
-    form = step_3.form(key="selection")
-    c1, c2, c3 = form.columns((1,1,1))
-    
-    select_lis = []
-    for i, face_img in enumerate(faces_img,0):
-        face_img = face_img.resize((150,150))
-        if i%3==0:
-            c1.image(face_img)
-            select = c1.checkbox('Select', value=False, key=f'person_{i}')
-            c1.markdown('---')
-        elif i%3==1:
-            c2.image(face_img)
-            select = c2.checkbox('Select', value=False, key=f'person_{i}')
-            c2.markdown('---')
-        else:
-            c3.image(face_img)
-            select = c3.checkbox('Select', value=False, key=f'person_{i}')
-            c3.markdown('---')
-
-        select_lis.append((select,face_img))
-    
-    submitted = form.form_submit_button(label="Submit")
 
     with st.sidebar:
-        st.subheader('Blur config')
-        ksize = st.slider(
-            "Kernel size",
-            min_value=11,
+        st.subheader("Face Detect Config")
+        threshold = st.slider(
+            "Confidence",
+            min_value=50,
             max_value= 99,
-            value=29,
-            step=2
-            )
-        st.caption('Click "Submit" button for apply config values')
+            value=80,
+            step=1)
+        min_face_size = st.slider(
+            'Minimum Face Size in the Image',
+            min_value=10,
+            max_value=100,
+            value=50,
+            step=1
+        )
+        st.caption('Click "Process" button for apply config values')
+        
+    if step_2.button('Process', on_click=to_state, args=('select',)):
+        boxes= processing_img(img, threshold=threshold/100, min_face_size=min_face_size)
+        if boxes is None:
+            st.error('Image have no face!, please upload new Image')
+            st.session_state.state = 'error'
+        else:
+            label_img = get_label_img(img, boxes)
+            faces_img = get_faces_img(img, boxes)
+            n_faces = len(boxes)
 
-    if submitted:
-        blur_img = get_blur_img(img, boxes, select_lis, ksize)
-        st.session_state.blur_img = blur_img
-        blur_img.save(BLUR_IMG_PATH)
-        st.session_state.state = 'download'
-    
-if st.session_state.state=='download':
-    step_4.image(st.session_state.blur_img)
+            st.session_state.boxes = boxes
+            st.session_state.faces_img = faces_img
+            st.session_state.label_img = label_img
+            st.session_state.n_faces = n_faces
+            st.session_state.caption = 'Labeled Image'
 
-    with open(BLUR_IMG_PATH, 'rb') as file:
-        btn = step_4.download_button(
-                    label="Download image",
-                    data=file,
-                    file_name="Blur_image.jpg",
-                    mime="image/png"
+
+    if st.session_state.state!='upload' and st.session_state.state!='error':
+        img = st.session_state.img
+        boxes = st.session_state.boxes
+        faces_img = st.session_state.faces_img
+        label_img = st.session_state.label_img
+        n_faces = st.session_state.n_faces
+        blur_img = st.session_state.blur_img
+        
+        display_n_faces.metric("Detected Faces", value = n_faces)
+        display_main_img.image(label_img, caption=st.session_state.caption)
+
+        form = step_3.form(key="selection")
+        c1, c2, c3 = form.columns((1,1,1))
+        
+        select_lis = []
+        for i, face_img in enumerate(faces_img,0):
+            face_img = face_img.resize((150,150))
+            if i%3==0:
+                c1.image(face_img)
+                select = c1.checkbox('Select', value=False, key=f'person_{i}')
+                c1.markdown('---')
+            elif i%3==1:
+                c2.image(face_img)
+                select = c2.checkbox('Select', value=False, key=f'person_{i}')
+                c2.markdown('---')
+            else:
+                c3.image(face_img)
+                select = c3.checkbox('Select', value=False, key=f'person_{i}')
+                c3.markdown('---')
+
+            select_lis.append((select,face_img))
+        
+        submitted = form.form_submit_button(label="Submit")
+
+        with st.sidebar:
+            st.subheader('Blur config')
+            ksize = st.slider(
+                "Kernel size",
+                min_value=11,
+                max_value= 99,
+                value=29,
+                step=2
                 )
-        if btn:
-            step_4.success('Download Success')
+            st.caption('Click "Submit" button for apply config values')
 
+        if submitted:
+            blur_img = get_blur_img(img, boxes, select_lis, ksize)
+            st.session_state.blur_img = blur_img
+            blur_img.save(BLUR_IMG_PATH)
+            st.session_state.state = 'download'
+        
+    if st.session_state.state=='download':
+        step_4.image(st.session_state.blur_img)
 
+        with open(BLUR_IMG_PATH, 'rb') as file:
+            btn = step_4.download_button(
+                        label="Download image",
+                        data=file,
+                        file_name="Blur_image.jpg",
+                        mime="image/png"
+                    )
+            if btn:
+                step_4.success('Download Success')
+
+elif choose == 'Video':
+    st.video("images/face_blur/example_video.mp4")
+
+    st.write('video')
+
+elif choose == 'YouTube Link':
+    
+    st.write('youtube')
+    
 footer()
 
 
 
-        
+            
+
+            
+
+
+
+
+
 
         
-
-
-
-
-
-
-    

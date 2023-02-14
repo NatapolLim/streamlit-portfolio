@@ -61,7 +61,7 @@ st.markdown('''### Projects''')
 txt("""<p id="head_project">Face Blur app</p>""", "Feb 2023")
 _, c1, c2 = st.columns((0.1,1,2))
 
-c1.image("images/face_blur/test_gif.GIF")
+c1.image("images/face_blur/test_gif.gif")
 c2.markdown("""
 - Build a Face Blur web app using <kbd>Streamlit</kbd> framework
 - Implement Face Detection model from pytorch-face_recognition 
@@ -103,6 +103,7 @@ c2.markdown("""
 - Built <kbd>3D Printing</kbd> rapid prototypes for proofs-of-concept before CNC
 - Redesigned parts to minimize size as possible for the CNC and improved <kbd>Design For Assemble</kbd>
 """, unsafe_allow_html=True)
+c1.button("Read More", on_click=nav_page, args=('Mechanical_Design',))
 
 with st.sidebar:
     footer()
