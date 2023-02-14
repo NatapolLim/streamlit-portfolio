@@ -1,15 +1,53 @@
-# from facenet_pytorch import MTCNN
-# from PIL import Image, ImageDraw
-# from IPython import display
-# import pandas as pd
-# import numpy as np
-# import torch
-# import streamlit as st
+from streamlit.components.v1 import html
+import streamlit as st
 import base64
 import cv2
 import os
 
-# import os
+#Profile Page
+def nav_page(page_name, timeout_secs=3):
+    nav_script = """
+        <script type="text/javascript">
+            function attempt_nav_page(page_name, start_time, timeout_secs) {
+                var links = window.parent.document.getElementsByTagName("a");
+                for (var i = 0; i < links.length; i++) {
+                    if (links[i].href.toLowerCase().endsWith("/" + page_name.toLowerCase())) {
+                        links[i].click();
+                        return;
+                    }
+                }
+                var elasped = new Date() - start_time;
+                if (elasped < timeout_secs * 1000) {
+                    setTimeout(attempt_nav_page, 100, page_name, start_time, timeout_secs);
+                } else {
+                    alert("Unable to navigate to page '" + page_name + "' after " + timeout_secs + " second(s).");
+                }
+            }
+            window.addEventListener("load", function() {
+                attempt_nav_page("%s", new Date(), %d);
+            });
+        </script>
+    """ % (page_name, timeout_secs)
+    html(nav_script)
+
+def txt(a, b):
+    _, col1, col2 = st.columns((0.1,4, 1))
+    with col1:
+        st.markdown(a, unsafe_allow_html=True)
+    with col2:
+        st.markdown(b, unsafe_allow_html=True)
+
+def txt_skills(topic, skills):
+    _, col1, col2 = st.columns((0.1, 1, 3))
+    with col1:
+        st.markdown(topic)
+    with col2:
+        text=""""""
+        for skill in skills:
+            text+=f"<kbd>{skill}</kbd>"
+            text+=', '
+        
+        st.markdown(text[:-2], unsafe_allow_html=True)
 
 #Face Blur
 def resize_box(ori_img_size,boxes, margin=0):
@@ -31,127 +69,51 @@ def gauss_blur_face(box, img, size):
     img[y1:y2, x1:x2] = roi
     return img
 
-def img_to_bin(img_path):
+def to_bin(img_path):
     with open(img_path, "rb") as file:
         contents = file.read()
-        img_bin = base64.b64encode(contents).decode("utf-8")
-    return img_bin
+        bin = base64.b64encode(contents).decode("utf-8")
+    return bin
+
+
 
 # def html_display_gif(img_path):
 #     img_bin = img_to_bin(img_path)
 #     html_code = f'''<img src="data:image/gif;base64,{img_bin}" width=200>''',
 #     return html_code
 
-def html_display_img_with_href(img_path, target_url, size=30, circle=False):
-    img_cls= ''
-    if circle:
-        img_cls = "rounded-circle"
+def html_display_img_with_href(img_path, target_url, size=30):
     img_format = os.path.splitext(img_path)[-1].replace('.', '')
-    bin_str = img_to_bin(img_path)
+    bin_str = to_bin(img_path)
     html_code = f'''
         <a href="{target_url}">
-            <img class="{img_cls}" src="data:image/{img_format};base64,{bin_str}" width="{size}" height="{size}"/>
+            <img class="center" src="data:image/{img_format};base64,{bin_str}" width="{size}" height="{size}"/>
         </a>'''
     return html_code
-# #Not use
-# TEMP_FILES_DIR = "data/face_recognition/temp"
-# UPLOAD_IMG_PATH = "data/face_recognition/temp/tmp_img.jpg"
-# EXAMPLE_IMG_PATH = "data/face_recognition/example1.jpg"
-# FACES_IMG_PATH = "data/face_recognition/temp/faces_output/face.jpg"
-# FACES_IMG_DIR = "data/face_recognition/temp/faces_output"
-# BOXES_POINTS_DIR = "data/face_recognition/temp/face_boxes"
 
-# class FaceRec():
-#     def __init__(self, img_path) -> None:
-#         self.device = torch.device('cpu')
-#         self.img_path = img_path
-#         self.img = get_img(img_path)
-#         self.width, self.height = self.img.size
-#         self.detect_faces_img = self.img.copy()
-#         self.blur_img = self.img.copy()
+def footer():
+    st.markdown("""<hr class="style1">""", unsafe_allow_html=True)
+    st.markdown('''#### Contact''')
+    _, c2 ,c3, _ = st.columns((3,1,1,3))
 
-#         # self.resnet =InceptionResnetV1(pretrained='vggface2').eval().to(self.device)
-#         self.n_face = 0
-#         self.face_paths = []
-#         self.batch_boxes = None
-#         self.faces = None
-#         self.boxes_info = {}
+    linkedin_img_html = html_display_img_with_href(
+        'images/profile/640px-LinkedIn_logo_initials.png',
+        'https://www.linkedin.com/in/natapol-limpananuwat-686595202'
+        )
+    c2.write(linkedin_img_html, unsafe_allow_html=True)
 
-#     def cropped_face(self):
-#         # delete_tmp_files_if_exist(FACES_IMG_DIR)
-#         # delete_tmp_files_if_exist(BOXES_POINTS_DIR)
-#         delete_tmp_files_if_exist(TEMP_FILES_DIR)
-#         mtcnn = MTCNN(
-#             image_size=160,
-#             margin=20,
-#             min_face_size=100,
-#             thresholds=[0.6, 0.7, 0.7],
-#             factor=0.709,
-#             post_process=True,
-#             keep_all=True,
-#             device=self.device
-#         )
-#         self.batch_boxes, batch_probs, batch_points = mtcnn.detect(self.img, landmarks=True)
-#         self.faces= mtcnn.extract(self.img, self.batch_boxes, FACES_IMG_PATH)
-#         self.n_face = self.faces.shape[0]
+    github_img_html = html_display_img_with_href(
+        'images/profile/1164606_telegram-icon-github-icon-png-white-png-download.png-removebg-preview.png',
+        'https://github.com/NatapolLim'
+        )
+    c3.write(github_img_html, unsafe_allow_html=True)
 
-#         self.detect_faces_img = self.img.copy()
-#         draw = ImageDraw.Draw(self.detect_faces_img)
-#         for box in self.batch_boxes:
-#             draw.rectangle(box.tolist(), outline=(255, 0, 0), width=6)
-        
-#         self.blur_img.save(os.path.join(TEMP_FILES_DIR,'blur_img.jpg'))
-#         self.detect_faces_img.save(os.path.join(TEMP_FILES_DIR,'labels.jpg'))
-#         self.save_boxes(self.batch_boxes)
-#         self.save_n_faces()
+    _, c2 ,_ = st.columns((1,3,1))
 
-#         return self.detect_faces_img
+    c2.markdown("""<address>
+    Address: Bangkoknoi Bangkok 10700</br>
+    Email: <a href="mailto:natapolllim@gmail.com">Natapolllim@gmail.com</a></br>
+    Tel: 084-926-7299
+    </address>
 
-#     def save_boxes(self, batch_boxes):
-#         with open(os.path.join(TEMP_FILES_DIR, 'boxes.txt'), 'w') as file:
-#             for box in batch_boxes:
-#                 for point in box:
-#                     file.write(str(int(point)))
-#                     file.write(" ")
-#                 file.write('\n')
-
-#     def save_n_faces(self):
-#         with open(os.path.join(TEMP_FILES_DIR,'n_faces.txt'), 'w') as file:
-#             file.write(str(self.n_face))
-
-#     def inference():
-#         pass
-
-# def get_img(path):
-#     img = cv2.imread(path)
-#     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-#     img = Image.fromarray(img)
-#     return img
-
-# def delete_tmp_files_if_exist(path_dir):
-#     output_files = os.listdir(path_dir)
-#     # print(output_files)
-#     if len(output_files)!=0:
-#         for file in output_files:
-#             if file =='faces_output':
-#                 delete_tmp_files_if_exist(FACES_IMG_DIR)
-#             else:    
-#                 os.remove(os.path.join(path_dir, file))
-
-# def blur_face(xyxy, img_array):
-#     x1,y1,x2,y2 = [int(point) for point in xyxy]
-#     roi = img_array[y1:y2,x1:x2]
-#     roi = cv2.GaussianBlur(roi, (29, 29), 30)
-#     img_array[y1:y2, x1:x2] = roi
-#     blur_img = Image.fromarray(img_array)
-#     blur_img.save(os.path.join(TEMP_FILES_DIR,'blur_img.jpg'))
-#     return blur_img
-
-# class FaceBox():
-#     def __init__(self, img, filename) -> None:
-#         self.img = img
-#         self.xyxy = None
-#         self.encode = None
-#         self.select = False
-#         self.name = "Unknown"
-#         self.filename = filename
+    """, unsafe_allow_html=True)

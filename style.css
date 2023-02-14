@@ -1,10 +1,9 @@
 ul {
-    padding-left: 1.5rem;
+    padding-left: 0px ;
   }
 
 h1 {
-    text-align:center;
-    padding: 0;
+    text-align: center;
 }
 h2 {
     text-align: center;
@@ -17,25 +16,15 @@ h5 {
     text-align:center;
 }
 
-#footer {
+address {
     text-align: center;
     font-size: 15px;
     padding: 10px;
-
 }
 
-#image {
-    align-items: center;
-}
-#MainMenu {
-    visibility: hidden;
-}
-footer {
-    visibility: hidden;
-}
-header {
-    visibility: hidden;
-}
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
 
 hr.style1 { 
     border: 0; 
@@ -61,15 +50,26 @@ kbd {
     padding: 3px!important;
 }
 
-[data-testid="stSidebar"] {
+/* [data-testid="stSidebar"] {
     background-color: #3c3c3c !important;
     visibility: visible;
     width: 300px!important;
+} */
+
+a {
+    text-decoration: none;
+    color: white !important;
+    font-weight: 500;
 }
 
-#test {
-    background-color: #dddddd54 !important;
+a:hover {
+    color: #ef971d !important;
+    text-decoration: none;
 }
 
-
-
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30px;
+  }
