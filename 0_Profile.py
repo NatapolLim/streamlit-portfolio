@@ -61,7 +61,7 @@ st.markdown('''### Projects''')
 txt("""<p id="head_project">Face Blur app</p>""", "Feb 2023")
 _, c1, c2 = st.columns((0.1,1,2))
 
-c1.image("images/face_blur/test_gif.gif")
+c1.image("images/face_blur/test_gif.GIF")
 c2.markdown("""
 - Build a Face Blur web app using <kbd>Streamlit</kbd> framework
 - Implement Face Detection model from pytorch-face_recognition 
