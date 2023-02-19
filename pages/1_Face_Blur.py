@@ -85,8 +85,7 @@ def to_state(state):
 
 
 #Head
-st.markdown("## Face Blur", unsafe_allow_html=True)
-
+st.title('Face Blur')
 
 choose = option_menu("Input Options", ['Image','Video','YouTube Link'],
                         icons=['image', 'camera-video','youtube'],
@@ -244,7 +243,7 @@ elif choose == 'Video':
     st.write('video')
 
 elif choose == 'YouTube Link':
-    
+
     st.write('youtube')
     
 footer()

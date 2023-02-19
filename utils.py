@@ -1,5 +1,6 @@
 from streamlit.components.v1 import html
 import streamlit as st
+from PIL import Image, ImageDraw
 import base64
 import cv2
 import os
@@ -75,13 +76,34 @@ def to_bin(img_path):
         bin = base64.b64encode(contents).decode("utf-8")
     return bin
 
+#Face_blur_video
+@st.cache_resource
+def process(_mtcnn,img, threshold=0.9):
+    batch_boxes, batch_probs, _ = _mtcnn.detect(img, landmarks=True)
+    if batch_boxes is None:
+        return [], []
+    boxes=[]
+    probs=[]
+    for box, prob in zip(batch_boxes, batch_probs):
+        if prob < threshold:
+            continue
+        else:
+            box = [int(p) for p in box]
+            boxes.append(box)
+            probs.append(prob)
+
+    return probs, boxes
+
+def draw(img, boxes):
+    label_img = img.copy()
+    draw = ImageDraw.Draw(label_img)
+    for box in boxes:
+        draw.rectangle(box, outline=(255, 0, 0), width = 6)
+
+    return label_img
 
 
-# def html_display_gif(img_path):
-#     img_bin = img_to_bin(img_path)
-#     html_code = f'''<img src="data:image/gif;base64,{img_bin}" width=200>''',
-#     return html_code
-
+#General
 def html_display_img_with_href(img_path, target_url, size=30):
     img_format = os.path.splitext(img_path)[-1].replace('.', '')
     bin_str = to_bin(img_path)

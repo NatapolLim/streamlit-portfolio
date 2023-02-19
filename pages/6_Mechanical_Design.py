@@ -4,7 +4,7 @@ from utils import txt
 with open("style.css", 'r') as file:
     st.markdown("<style>{}</style>".format(file.read()), unsafe_allow_html=True)
 
-txt("""<p id="head_project">Structure designed and built a mobile base robot</p>""", "Apr 2022")
+st.header("Structure designed and built a mobile base robot")
 st.image("./images/profile/senior_example.GIF")
 
 st.markdown("""
