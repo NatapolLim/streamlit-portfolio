@@ -4,7 +4,6 @@ import cv2
 import sys
  
 # setting path
-sys.path.append('../streamlit-portfolio')
 
 def test_gauss_blur_face():
     from utils import gauss_blur_face

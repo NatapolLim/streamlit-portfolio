@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw
 import base64
 import cv2
 import os
+import numpy as np
 
 #Profile Page
 def nav_page(page_name, timeout_secs=3):
@@ -51,14 +52,15 @@ def txt_skills(topic, skills):
         st.markdown(text[:-2], unsafe_allow_html=True)
 
 #Face Blur
-def resize_box(ori_img_size,boxes, margin=0):
+def adjust_boxes(ori_img_size: tuple,boxes: list, margin: int=0) -> list:
+    '''Resize boxes to proper format'''
     new_boxes=[]
     for box in boxes:
         box = [
             int(max(box[0]-margin/2,0)),
             int(max(box[1]-margin/2,0)),
-            int(min(box[2]+margin/2, ori_img_size[1])),
-            int(min(box[3]+margin/2, ori_img_size[0])),
+            int(min(box[2]+margin/2, ori_img_size[0])),
+            int(min(box[3]+margin/2, ori_img_size[1])),
         ]
         new_boxes.append(box)
     return new_boxes
@@ -94,11 +96,30 @@ def process(_mtcnn,img, threshold=0.9):
 
     return probs, boxes
 
-def draw(img, boxes):
+#Face Recognition
+def get_faces_img(img: Image ,boxes: list, img_size: tuple=(160,160)) -> list:
+    '''Extract faces form image using given boxes point'''
+    faces_img = []
+    original_img_size=img.size
+    img = np.array(img)
+    boxes = adjust_boxes(original_img_size, boxes)
+    for box in boxes:
+        face = img[box[1]:box[3] ,box[0]:box[2]]
+        face = cv2.resize(
+            face,
+            img_size,
+            interpolation=cv2.INTER_AREA
+            ).copy()
+        faces_img.append(Image.fromarray(face))
+    return faces_img
+
+
+def draw(img: Image, boxes: list, width: int=6) -> Image:
+    '''Draw regtangle box in the image'''
     label_img = img.copy()
     draw = ImageDraw.Draw(label_img)
     for box in boxes:
-        draw.rectangle(box, outline=(255, 0, 0), width = 6)
+        draw.rectangle(box, outline=(255, 0, 0), width = width)
 
     return label_img
 

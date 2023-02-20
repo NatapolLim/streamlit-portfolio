@@ -1,6 +1,6 @@
 from facenet_pytorch import MTCNN
 from streamlit_option_menu import option_menu
-from utils import resize_box, gauss_blur_face, footer
+from utils.utils import adjust_boxes, gauss_blur_face, footer
 import extra_streamlit_components as stx
 from PIL import Image, ImageDraw
 import streamlit as st
@@ -21,7 +21,7 @@ BLUR_IMG_PATH = "images/face_blur/Blur_img.jpg"
 with open("style.css", 'r') as file:
     st.markdown("<style>{}</style>".format(file.read()), unsafe_allow_html=True)
 
-@st.cache(suppress_st_warning=True)
+@st.cache_data
 def processing_img(img, threshold=0.8, min_face_size=50):
     
     mtcnn = MTCNN(
@@ -45,7 +45,7 @@ def processing_img(img, threshold=0.8, min_face_size=50):
                 boxes.append(box)
     return boxes
 
-@st.cache(suppress_st_warning=True)
+
 def get_label_img(img, boxes):
     label_img = img.copy()
     draw = ImageDraw.Draw(label_img)
@@ -53,11 +53,11 @@ def get_label_img(img, boxes):
         draw.rectangle(box.tolist(), outline=(255, 0, 0), width = 6)
     return label_img
 
-@st.cache(suppress_st_warning=True)
+
 def get_faces_img(img, boxes, img_size = 160):
     faces_img = []
     img = np.array(img)
-    boxes = resize_box(img.shape, boxes, margin =10)
+    boxes = adjust_boxes(img.shape, boxes, margin =10)
 
     for box in boxes:
         x1, y1, x2, y2 = box
@@ -72,7 +72,7 @@ def get_faces_img(img, boxes, img_size = 160):
 
 def get_blur_img(img, boxes, select_lis, ksize):
     img = np.array(img)
-    boxes = resize_box(img.shape, boxes, margin =20)
+    boxes = adjust_boxes(img.shape, boxes, margin=20)
     for (selected, _), box in zip(select_lis, boxes):
         if not selected:
                 continue
@@ -85,9 +85,7 @@ def to_state(state):
 
 
 #Head
-st.title('Face Blur')
-
-choose = option_menu("Input Options", ['Image','Video','YouTube Link'],
+choose = option_menu("Face Blur", ['Image','Video','YouTube Link'],
                         icons=['image', 'camera-video','youtube'],
                         menu_icon=None, default_index=0,
                         styles={
