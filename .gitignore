@@ -11,3 +11,4 @@ tests/__pycache__
 venv
 notebooks/
 utils/__pycache__
+__pycache__
