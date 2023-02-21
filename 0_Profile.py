@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import txt, txt_skills, footer, nav_page, to_bin
+from utils.utils import txt, txt_skills, footer, nav_page, to_bin
 
 st.set_page_config(
     page_title="Profile Page",
