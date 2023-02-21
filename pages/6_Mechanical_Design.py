@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import txt
+from utils.utils import txt
 
 with open("style.css", 'r') as file:
     st.markdown("<style>{}</style>".format(file.read()), unsafe_allow_html=True)

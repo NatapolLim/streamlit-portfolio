@@ -1,13 +1,37 @@
-from streamlit.components.v1 import html
-import streamlit as st
-from PIL import Image, ImageDraw
-import base64
-import cv2
 import os
+import base64
 import numpy as np
+import cv2
+from PIL import Image, ImageDraw
+import streamlit as st
+from streamlit.components.v1 import html
+
+#State control for Streamlit
+def change_multi_state(state_pair: tuple) -> None:
+    '''Change State from callback fucntion follow the state input.'''
+    for state_key, state in state_pair:
+        st.session_state[state_key] = state
+
+def change_state_text(state_key: str, state: str) -> None:
+    '''Change State from callback fucntion follow the state input.'''
+    st.session_state[state_key] = state
+    # For face recognition app
+    if state in ['webcam','webcam_add_face']:
+        backup_img(state)
+
+def change_state_bool(state_key: str,state: bool) -> None:
+    '''Change State from callback fucntion follow the state input.'''
+    st.session_state[state_key] = state
+
+def backup_img(key: str) -> None:
+    '''Backup image from webcam and Check in case webcam is closed, then do not backup again.'''
+    if st.session_state[key] is not None:
+        _img = st.session_state[key]
+        st.session_state.backup_img = Image.open(_img).copy()
 
 #Profile Page
 def nav_page(page_name, timeout_secs=3):
+    '''Function for navigation to another page'''
     nav_script = """
         <script type="text/javascript">
             function attempt_nav_page(page_name, start_time, timeout_secs) {
@@ -32,14 +56,16 @@ def nav_page(page_name, timeout_secs=3):
     """ % (page_name, timeout_secs)
     html(nav_script)
 
-def txt(a, b):
+def txt(a: str, b: str) -> None:
+    '''Display text in specific pattern.'''
     _, col1, col2 = st.columns((0.1,4, 1))
     with col1:
         st.markdown(a, unsafe_allow_html=True)
     with col2:
         st.markdown(b, unsafe_allow_html=True)
 
-def txt_skills(topic, skills):
+def txt_skills(topic: str, skills: str) -> None:
+    '''Display text in specific pattern.'''
     _, col1, col2 = st.columns((0.1, 1, 3))
     with col1:
         st.markdown(topic)
@@ -48,12 +74,11 @@ def txt_skills(topic, skills):
         for skill in skills:
             text+=f"<kbd>{skill}</kbd>"
             text+=', '
-        
         st.markdown(text[:-2], unsafe_allow_html=True)
 
 #Face Blur
 def adjust_boxes(ori_img_size: tuple,boxes: list, margin: int=0) -> list:
-    '''Resize boxes to proper format'''
+    '''Resize boxes to proper format.'''
     new_boxes=[]
     for box in boxes:
         box = [
@@ -65,18 +90,30 @@ def adjust_boxes(ori_img_size: tuple,boxes: list, margin: int=0) -> list:
         new_boxes.append(box)
     return new_boxes
 
-def gauss_blur_face(box, img, size):
-    x1, y1, x2, y2 = box
-    roi = img[y1:y2, x1:x2]
+def gauss_blur_face(box: list, img: Image, size: int) -> Image:
+    '''Blur area in rectangle boxes.'''
+    roi = img[box[1]:box[3], box[0]:box[2]]
     roi = cv2.GaussianBlur(roi, (size, size), 30)
-    img[y1:y2, x1:x2] = roi
+    img[box[1]:box[3], box[0]:box[2]] = roi
     return img
 
-def to_bin(img_path):
+def get_blur_img(img_: Image, boxes_: list, select_lis_: list, ksize_: int) -> Image:
+    '''Blur faces image as boxes input'''
+    img_ = np.array(img_)
+    boxes_ = adjust_boxes(img_.shape, boxes_, margin=20)
+    for (selected, _), box in zip(select_lis_, boxes_):
+        if not selected:
+            continue
+        else:
+            img_ = gauss_blur_face(box, img_, ksize_)
+    return Image.fromarray(img_)
+
+def to_bin(img_path) -> bytes:
+    '''Read image as binary'''
     with open(img_path, "rb") as file:
-        contents = file.read()
-        bin = base64.b64encode(contents).decode("utf-8")
-    return bin
+        txt_ = file.read()
+        bin_ = base64.b64encode(txt_).decode("utf-8")
+    return bin_
 
 #Face_blur_video
 @st.cache_resource
@@ -113,16 +150,13 @@ def get_faces_img(img: Image ,boxes: list, img_size: tuple=(160,160)) -> list:
         faces_img.append(Image.fromarray(face))
     return faces_img
 
-
 def draw(img: Image, boxes: list, width: int=6) -> Image:
     '''Draw regtangle box in the image'''
     label_img = img.copy()
-    draw = ImageDraw.Draw(label_img)
+    draw_ = ImageDraw.Draw(label_img)
     for box in boxes:
-        draw.rectangle(box, outline=(255, 0, 0), width = width)
-
+        draw_.rectangle(box, outline=(255, 0, 0), width = width)
     return label_img
-
 
 #General
 def html_display_img_with_href(img_path, target_url, size=30):
@@ -134,11 +168,11 @@ def html_display_img_with_href(img_path, target_url, size=30):
         </a>'''
     return html_code
 
-def footer():
+def footer() -> None:
+    '''Show footer in every pages'''
     st.markdown("""<hr class="style1">""", unsafe_allow_html=True)
     st.markdown('''#### Contact''')
     _, c2 ,c3, _ = st.columns((3,1,1,3))
-
     linkedin_img_html = html_display_img_with_href(
         'images/profile/640px-LinkedIn_logo_initials.png',
         'https://www.linkedin.com/in/natapol-limpananuwat-686595202'
@@ -152,11 +186,9 @@ def footer():
     c3.write(github_img_html, unsafe_allow_html=True)
 
     _, c2 ,_ = st.columns((1,3,1))
-
     c2.markdown("""<address>
     Address: Bangkoknoi Bangkok 10700</br>
     Email: <a href="mailto:natapolllim@gmail.com">Natapolllim@gmail.com</a></br>
     Tel: 084-926-7299
     </address>
-
     """, unsafe_allow_html=True)
