@@ -17,8 +17,8 @@ st.set_page_config(
 with open("style.css", 'r') as file:
     st.markdown("<style>{}</style>".format(file.read()), unsafe_allow_html=True)
 
-DATA_MAP_PATH = "images/face_recognition/data_store/data_map/data_map.csv"
-DATA_STORE_DIR = "images/face_recognition/data_store"
+DATA_MAP_PATH = "assets/face_recognition/data_store/data_map/data_map.csv"
+DATA_STORE_DIR = "assets/face_recognition/data_store"
 
 def add_face_to_database(name_: str, face_features_: torch.Tensor, face_img_: Image) -> None:
     '''Add face features to database and mapping with name.'''
@@ -85,8 +85,8 @@ if choose=='Check-In':
     with st.expander(label='Image Input', expanded=True):
         st.caption('Select input source Example Image, Webcam or Upload Image')
 
-        example_imgs = {'Elon':'images/face_recognition/example_faces/elon_musk/3.jpg',
-                'Code':'images/face_recognition/example_faces/codedy/4.jpg',
+        example_imgs = {'Elon':'assets/face_recognition/example_faces/elon_musk/3.jpg',
+                'Code':'assets/face_recognition/example_faces/codedy/4.jpg',
                 }
         example_name = st.selectbox(label='Example images',
             options=example_imgs,
