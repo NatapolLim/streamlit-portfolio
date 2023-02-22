@@ -18,13 +18,13 @@ st.write('''
 
 #Profile Image
 _, c2, _ = st.columns((1,1,1))
-c2.image("images/profile/profile_img.png")
+c2.image("assets/profile/profile_img.png")
 
 
 #Profile summary
 c1, c2 = st.columns((3,1))
 c1.write('### Summary')
-with open("images/profile/Resume_Natapol_2023-1.pdf",'rb') as pdf_file:
+with open("assets/profile/Resume_Natapol_2023-1.pdf",'rb') as pdf_file:
     PDFbyte = pdf_file.read()
 c2.download_button(label='Download Resume',
     data=PDFbyte,
@@ -61,7 +61,7 @@ st.markdown('''### Projects''')
 txt("""<p id="head_project">Face Blur app</p>""", "Feb 2023")
 _, c1, c2 = st.columns((0.1,1,2))
 
-c1.image("images/face_blur/test_gif.GIF")
+c1.image("assets/face_blur/test_gif.GIF")
 c2.markdown("""
 - Build a Face Blur web app using <kbd>Streamlit</kbd> framework
 - Implement Face Detection model from pytorch-face_recognition 
@@ -96,7 +96,7 @@ st.markdown("""<hr class="style2">""", unsafe_allow_html=True)
 #Project4
 txt("""<p id="head_project">Structure designed and built a mobile base robot</p>""", "Feb 2022")
 _, c1, c2 = st.columns((0.1,1,2))
-c1.image("images/profile/senior_project.jpg")
+c1.image("assets/profile/senior_project.jpg")
 c2.markdown("""
 - Determine fabrication process of components and choose standardized parts for cost reduction 
 - Designed parts using <kbd>Fusion 360</kbd> and applied with <kbd>Finite Element Analysis</kbd> for validation designing

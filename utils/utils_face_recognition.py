@@ -9,7 +9,7 @@ import numpy as np
 from utils.utils import get_faces_img, draw
 import streamlit as st
 
-DATA_STORE_DIR = "images/face_recognition/data_store"
+DATA_STORE_DIR = "assets/face_recognition/data_store"
 class PreProcesssPipeline:
     '''Store MTCNN and model and perform extracting faces'''
     def __init__(self, min_face_size: int=50, keep_all: bool=False) -> None:
@@ -64,15 +64,23 @@ class CompareFacesPipeline:
             index_col=None
             )
 
+    @st.cache_data
+    def load_tensors(faces_df: pd.DataFrame) -> torch.Tensor:
+        '''Cache loading tensor from db'''
+        faces_features_in_db=[]
+        filenames_all_faces = faces_df['filename']
+        for file_ in filenames_all_faces:
+            face_features_in_db = torch.load(file_)
+            faces_features_in_db.append(face_features_in_db)
+        return faces_features_in_db
+
     def cal_euclidience_dis(self, face_features_: torch.Tensor) -> list:
         '''Compare and calculate the euclidence distance between specific faces.'''
         dists_=[]
-        filenames_all_faces = self.all_faces.filename
-        for file_ in filenames_all_faces:
-            face_features_in_db = torch.load(file_)
+        faces_features_in_db = self.load_tensors(self.all_faces)
+        for face_features_in_db in faces_features_in_db:
             dist = (face_features_-face_features_in_db).norm().item()
             dists_.append(dist)
-
         return dists_
 
     def compare_faces(self, face_features_: torch.Tensor, threshold: float=0.6, return_dist: bool=False) -> int:
@@ -88,17 +96,15 @@ class CompareFacesPipeline:
             return ret_, dists_[ret_]
         return ret_
 
-    def get_info(self) -> list:
+    @st.cache_data
+    def get_info(face_df, idx_: int) -> list:
         '''Gather data form Dataframe and the picture of the most similar person.'''
-        idx_ = self.compare_faces(self.face_features)
         if idx_ == -1:
             return 0, 'Unknown', 'Unknown'
-        row_ = self.all_faces.iloc[[idx_]]
+        row_ = face_df.iloc[[idx_]]
         picture_file = row_['filename'].values[0].split('/')[-1].split('.')[0]
-
         name_ = row_['name'].values[0]
         picture_ = Image.open(os.path.join(DATA_STORE_DIR, 'pictures', picture_file+'.jpg'))
-
         return 1, name_, picture_
 
     def fetch_data_form_db(self, idx_: int) -> list:

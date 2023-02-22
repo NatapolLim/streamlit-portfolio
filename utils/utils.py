@@ -174,13 +174,13 @@ def footer() -> None:
     st.markdown('''#### Contact''')
     _, c2 ,c3, _ = st.columns((3,1,1,3))
     linkedin_img_html = html_display_img_with_href(
-        'images/profile/640px-LinkedIn_logo_initials.png',
+        'assets/profile/640px-LinkedIn_logo_initials.png',
         'https://www.linkedin.com/in/natapol-limpananuwat-686595202'
         )
     c2.write(linkedin_img_html, unsafe_allow_html=True)
 
     github_img_html = html_display_img_with_href(
-        'images/profile/1164606_telegram-icon-github-icon-png-white-png-download.png-removebg-preview.png',
+        'assets/profile/1164606_telegram-icon-github-icon-png-white-png-download.png-removebg-preview.png',
         'https://github.com/NatapolLim'
         )
     c3.write(github_img_html, unsafe_allow_html=True)

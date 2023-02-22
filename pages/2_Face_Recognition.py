@@ -103,7 +103,7 @@ if choose=='Check-In':
                 )
         file = c2.file_uploader(
             "Upload File Here",
-            type=['jpg'],
+            type=['jpg','HEIC'],
             on_change=change_state_text,
             args=('FR_state','upload',),
             key='upload_img'
@@ -153,8 +153,8 @@ if choose=='Check-In':
         face_features = pre_process.encode_face(img)
 
         process_dist = CompareFacesPipeline(face_features)
-        status, name, face_img = process_dist.get_info()
         idx, dist = process_dist.compare_faces(face_features, return_dist=True)
+        status, name, face_img = process_dist.get_info(process_dist.all_faces, idx)
 
         with st.expander(label='Result', expanded=True):
             if status == 1:

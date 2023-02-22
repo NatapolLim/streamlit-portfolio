@@ -8,8 +8,8 @@ st.set_page_config(
     page_icon="🤩"
 )
 
-EXAMPLE_IMG_PATH = "images/face_blur/example1.jpg"
-BLUR_IMG_PATH = "images/face_blur/Blur_img.jpg"
+EXAMPLE_IMG_PATH = "assets/face_blur/example1.jpg"
+BLUR_IMG_PATH = "assets/face_blur/Blur_img.jpg"
 
 with open("style.css", 'r') as file:
     st.markdown("<style>{}</style>".format(file.read()), unsafe_allow_html=True)
