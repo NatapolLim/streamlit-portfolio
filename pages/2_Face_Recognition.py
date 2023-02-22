@@ -103,7 +103,7 @@ if choose=='Check-In':
                 )
         file = c2.file_uploader(
             "Upload File Here",
-            type=['jpg','HEIC'],
+            type=['jpg','png'],
             on_change=change_state_text,
             args=('FR_state','upload',),
             key='upload_img'
@@ -196,7 +196,7 @@ elif choose=='Add Face':
         c1.caption('Please select Open/Stop camera manually')
         file = c2.file_uploader(
             "Upload File Here",
-            type=['jpg'],
+            type=['jpg','png'],
             on_change=change_state_text,
             args=('FR_state','upload',),
             key='upload_img')

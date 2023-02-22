@@ -50,7 +50,7 @@ with st.sidebar:
     st.caption('Click "Process" button for apply config values')
 
 file = step_1.file_uploader(
-    "", type=['jpg'],
+    "", type=['jpg','png'],
     on_change=change_multi_state,
     args=((('FB_state', 'load_img'),('img_input', 'upload')),),
     key='upload_file'
