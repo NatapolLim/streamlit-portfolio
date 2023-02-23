@@ -1,4 +1,3 @@
 name,filename
-Natapol,assets/face_recognition/data_store/tensors/0_Natapol.pt
-Elon,assets/face_recognition/data_store/tensors/1_Elon.pt
-Code,assets/face_recognition/data_store/tensors/2_Code.pt
+Elon,assets/face_recognition/data_store/tensors/0_Elon.pt
+Code,assets/face_recognition/data_store/tensors/1_Code.pt

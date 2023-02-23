@@ -1,7 +1,10 @@
-from utils.utils import change_multi_state, change_state_text, get_blur_img, footer
-from utils.utils_face_recognition import PreProcesssPipeline
+from utils.utils import change_multi_state, change_state_text, get_blur_img, footer, load_img
+from utils.utils_face_recognition import PreProcessPipeline
 from PIL import Image
+from PIL.JpegImagePlugin import JpegImageFile
 import streamlit as st
+from streamlit.runtime.uploaded_file_manager import UploadedFile
+
 
 st.set_page_config(
     page_title="Face Blur Project",
@@ -16,7 +19,6 @@ with open("style.css", 'r') as file:
 
 st.header("Face Blue Image")
 
-# if choose == 'Image':
 if 'FB_state' not in st.session_state:
     st.session_state.FB_state = 'load_img'
     st.session_state.img_input = 'example'
@@ -38,34 +40,36 @@ with st.sidebar:
         min_value=50,
         max_value= 99,
         value=80,
-        step=1
+        step=1,
+        key='FB_threshold'
         )
     min_face_size = st.slider(
         'Minimum Face Size in the Image',
         min_value=10,
         max_value=100,
         value=50,
-        step=1
+        step=1,
+        key='FB_min_face_size',
         )
-    st.caption('Click "Process" button for apply config values')
 
 file = step_1.file_uploader(
-    "", type=['jpg','png'],
+    "Upload Here", type=['jpg','png'],
     on_change=change_multi_state,
     args=((('FB_state', 'load_img'),('img_input', 'upload')),),
-    key='upload_file'
+    key='upload_file',
+    label_visibility='hidden'
     )
 
 if st.session_state.img_input=="example":
-    img = Image.open(EXAMPLE_IMG_PATH)
+    img = load_img(EXAMPLE_IMG_PATH)
 
 elif st.session_state.img_input=="upload":
-    if isinstance(file, type(None)):
+    if isinstance(file, UploadedFile):
+        img = Image.open(file).convert('RGB')
+    else:
         st.error('Please Upload Image again')
         st.stop()
-    else:
-        img = Image.open(file)
-
+        
 if st.session_state.FB_state=='load_img':
     display_main_img.image(img, caption='Example Image')
     display_n_faces.metric("Detected Faces", value = 0)
@@ -73,12 +77,15 @@ if st.session_state.FB_state=='load_img':
 step_2.button(
     'Process',
     on_click=change_state_text,
-    args=('FB_state', 'select')
+    args=('FB_state', 'select'),
+    use_container_width=True
     )
 
-if st.session_state.FB_state=='select':
-    pre_process = PreProcesssPipeline(min_face_size=min_face_size, keep_all=True)
-    faces_img, label_img = pre_process.extract_face_img(img, threshold//100)
+def select_state() -> None:
+    '''Wrap process by function for reducing memory'''
+    pre_process = PreProcessPipeline(img, min_face_size=min_face_size, keep_all=True)
+    boxes = pre_process.extract_face_boxes(threshold=threshold//100)
+    faces_img, label_img = pre_process.extract_face_img(img, boxes)
 
     if faces_img is not None:
         display_main_img.image(label_img, caption='Labeled Image')
@@ -105,7 +112,11 @@ if st.session_state.FB_state=='select':
             c3.markdown('---')
 
         select_lis.append((select,face_img))
-    submitted = form.form_submit_button(label="Submit", on_click=change_state_text, args=('FB_state','select'))
+    submitted = form.form_submit_button(
+        label="Submit",
+        on_click=change_state_text,
+        args=('FB_state','select'),
+        use_container_width=True)
 
     with st.sidebar:
         st.subheader('Blur config')
@@ -119,21 +130,26 @@ if st.session_state.FB_state=='select':
         st.caption('Click "Submit" button for apply config values')
 
     if submitted:
-        boxes = pre_process.extract_face_boxes(img, threshold)
         blur_img = get_blur_img(img, boxes, select_lis, ksize)
         st.session_state.blur_img = blur_img
         blur_img.save(BLUR_IMG_PATH)
     
-if st.session_state.FB_state=='select' and 'blur_img' in st.session_state:
-    step_4.image(st.session_state.blur_img)
+    if st.session_state.FB_state=='select' and 'blur_img' in st.session_state:
+        step_4.image(st.session_state.blur_img)
+        with open(BLUR_IMG_PATH, 'rb') as file:
+            btn = step_4.download_button(
+                        label="Download image",
+                        data=file,
+                        file_name="Blur_image.jpg",
+                        mime="image/png",
+                        use_container_width=True
+                    )
+            if btn:
+                step_4.success('Download Success')
 
-    with open(BLUR_IMG_PATH, 'rb') as file:
-        btn = step_4.download_button(
-                    label="Download image",
-                    data=file,
-                    file_name="Blur_image.jpg",
-                    mime="image/png"
-                )
-        if btn:
-            step_4.success('Download Success')
+if st.session_state.FB_state=='select':
+    select_state()
+
+del img
+
 footer()    

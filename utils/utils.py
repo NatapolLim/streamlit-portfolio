@@ -1,23 +1,28 @@
 import os
 import base64
+import time
 import numpy as np
+import pandas as pd
+from typing import Tuple, List
 import cv2
 from PIL import Image, ImageDraw
+from PIL.JpegImagePlugin import JpegImageFile
 import streamlit as st
 from streamlit.components.v1 import html
+import torch
+from facenet_pytorch import MTCNN, InceptionResnetV1
 
 #State control for Streamlit
 def change_multi_state(state_pair: tuple) -> None:
     '''Change State from callback fucntion follow the state input.'''
     for state_key, state in state_pair:
+        if 'FR_img_input' == state_key and state.startswith('webcam'):
+            backup_img(state)
         st.session_state[state_key] = state
 
 def change_state_text(state_key: str, state: str) -> None:
     '''Change State from callback fucntion follow the state input.'''
     st.session_state[state_key] = state
-    # For face recognition app
-    if state in ['webcam','webcam_add_face']:
-        backup_img(state)
 
 def change_state_bool(state_key: str,state: bool) -> None:
     '''Change State from callback fucntion follow the state input.'''
@@ -30,7 +35,7 @@ def backup_img(key: str) -> None:
         st.session_state.backup_img = Image.open(_img).copy()
 
 #Profile Page
-def nav_page(page_name, timeout_secs=3):
+def nav_page(page_name, timeout_secs=3) -> None:
     '''Function for navigation to another page'''
     nav_script = """
         <script type="text/javascript">
@@ -76,8 +81,29 @@ def txt_skills(topic: str, skills: str) -> None:
             text+=', '
         st.markdown(text[:-2], unsafe_allow_html=True)
 
-#Face Blur
-def adjust_boxes(ori_img_size: tuple,boxes: list, margin: int=0) -> list:
+#Face fucn model
+@st.cache_resource
+def call_mtcnn(min_face_size: int=50, keep_all: bool=False) -> MTCNN:
+    '''create instance mtcnn'''
+    mtcnn = MTCNN(
+        image_size=160,
+        margin=0,
+        min_face_size=min_face_size,
+        thresholds=[0.6, 0.7, 0.7],
+        factor=0.709,
+        post_process=True,
+        keep_all=keep_all,
+        device=torch.device('cpu'),
+    )
+    return mtcnn
+
+@st.cache_resource
+def call_facemodel() -> InceptionResnetV1:
+    '''create instance model'''
+    model = InceptionResnetV1(pretrained='vggface2').eval().to(torch.device('cpu'))
+    return model
+
+def adjust_boxes(ori_img_size: Tuple[int,int], boxes: List, margin: int=0) -> List:
     '''Resize boxes to proper format.'''
     new_boxes=[]
     for box in boxes:
@@ -90,14 +116,37 @@ def adjust_boxes(ori_img_size: tuple,boxes: list, margin: int=0) -> list:
         new_boxes.append(box)
     return new_boxes
 
-def gauss_blur_face(box: list, img: Image, size: int) -> Image:
+def get_faces_img(img: JpegImageFile ,boxes: List, img_size: tuple=(160,160)) -> List:
+    '''Extract faces form image using given boxes point'''
+    faces_img = []
+    img = np.array(img)
+    for box in boxes:
+        face = img[box[1]:box[3] ,box[0]:box[2]]
+        face = cv2.resize(
+            face,
+            img_size,
+            interpolation=cv2.INTER_AREA
+            ).copy()
+        faces_img.append(Image.fromarray(face))
+    return faces_img
+
+def draw(img: JpegImageFile, boxes: List, width: int=6) -> JpegImageFile:
+    '''Draw regtangle box in the image'''
+    label_img = img.copy()
+    draw_ = ImageDraw.Draw(label_img)
+    for box in boxes:
+        draw_.rectangle(box, outline=(255, 0, 0), width = width)
+    return label_img
+
+#Face Blur
+def gauss_blur_face(box: List, img: JpegImageFile, size: int) -> JpegImageFile:
     '''Blur area in rectangle boxes.'''
     roi = img[box[1]:box[3], box[0]:box[2]]
     roi = cv2.GaussianBlur(roi, (size, size), 30)
     img[box[1]:box[3], box[0]:box[2]] = roi
     return img
 
-def get_blur_img(img_: Image, boxes_: list, select_lis_: list, ksize_: int) -> Image:
+def get_blur_img(img_: JpegImageFile, boxes_: List, select_lis_: List[bool], ksize_: int) -> JpegImageFile:
     '''Blur faces image as boxes input'''
     img_ = np.array(img_)
     boxes_ = adjust_boxes(img_.shape, boxes_, margin=20)
@@ -107,13 +156,6 @@ def get_blur_img(img_: Image, boxes_: list, select_lis_: list, ksize_: int) -> I
         else:
             img_ = gauss_blur_face(box, img_, ksize_)
     return Image.fromarray(img_)
-
-def to_bin(img_path) -> bytes:
-    '''Read image as binary'''
-    with open(img_path, "rb") as file:
-        txt_ = file.read()
-        bin_ = base64.b64encode(txt_).decode("utf-8")
-    return bin_
 
 #Face_blur_video
 @st.cache_resource
@@ -133,33 +175,26 @@ def process(_mtcnn,img, threshold=0.9):
 
     return probs, boxes
 
-#Face Recognition
-def get_faces_img(img: Image ,boxes: list, img_size: tuple=(160,160)) -> list:
-    '''Extract faces form image using given boxes point'''
-    faces_img = []
-    original_img_size=img.size
-    img = np.array(img)
-    boxes = adjust_boxes(original_img_size, boxes)
-    for box in boxes:
-        face = img[box[1]:box[3] ,box[0]:box[2]]
-        face = cv2.resize(
-            face,
-            img_size,
-            interpolation=cv2.INTER_AREA
-            ).copy()
-        faces_img.append(Image.fromarray(face))
-    return faces_img
-
-def draw(img: Image, boxes: list, width: int=6) -> Image:
-    '''Draw regtangle box in the image'''
-    label_img = img.copy()
-    draw_ = ImageDraw.Draw(label_img)
-    for box in boxes:
-        draw_.rectangle(box, outline=(255, 0, 0), width = width)
-    return label_img
-
 #General
-def html_display_img_with_href(img_path, target_url, size=30):
+@st.cache_data
+def load_img(path: str) -> JpegImageFile:
+    time.sleep(1)
+    return Image.open(path)
+
+@st.cache_data
+def load_df(path: str) -> pd.DataFrame:
+    time.sleep(1)
+    return pd.read_csv(path, index_col=None)
+
+def to_bin(img_path) -> bytes:
+    '''Read image as binary'''
+    with open(img_path, "rb") as file:
+        txt_ = file.read()
+        bin_ = base64.b64encode(txt_).decode("utf-8")
+    return bin_
+
+def html_display_img_with_href(img_path: str, target_url: str, size=30) -> str:
+    '''generate html code for display tagged image link'''
     img_format = os.path.splitext(img_path)[-1].replace('.', '')
     bin_str = to_bin(img_path)
     html_code = f'''
