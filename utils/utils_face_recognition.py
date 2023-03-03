@@ -85,7 +85,7 @@ class CompareFacesPipeline:
             dists_.append(dist)
         return dists_
 
-    def compare_faces(self, face_features_: torch.Tensor, threshold: float=0.6, return_dist: bool=False) -> Optional[int]:
+    def compare_faces(self, face_features_: torch.Tensor, threshold: float=0.7, return_dist: bool=False) -> Optional[int]:
         '''Return index that the most similar and check condition
         which distance must under threshold.'''
         dists_ = self.cal_euclidience_dis(face_features_)

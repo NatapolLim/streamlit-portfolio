@@ -224,8 +224,6 @@ def addface_page() -> None:
             args=((('FR_img_input','upload'),('FR_state','add_face')),),
             key='upload_img')
 
-
-    #select img input
     if st.session_state.FR_img_input=='webcam_add_face':
         if isinstance(img, UploadedFile):
             img = Image.open(img)
