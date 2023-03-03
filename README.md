@@ -9,6 +9,8 @@ let's try on this link
 
 ### Face Blur Image
 Goal of this project is learn to use MTCNN algorothm and Streamlit framework
+
+![Demo Face Blur app](./assets/profile/demo_face_blur.GIF)
 #### How to use this app
 
 ##### Step: 1

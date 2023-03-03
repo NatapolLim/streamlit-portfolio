@@ -89,7 +89,7 @@ st.markdown("""<hr class="style2">""", unsafe_allow_html=True)
 txt("""<p id="head_project">Face Blur app</p>""", "Feb 2023")
 _, c1, c2 = st.columns((0.1,1,2))
 
-c1.image("assets/face_blur/test_gif.GIF")
+c1.image("assets/profile/demo_face_blur.GIF")
 c2.markdown("""
 - Build a Face Blur web app using <kbd>Streamlit</kbd> framework
 - Implemented MTCNN for Face Deteciton and designed flow of using application
