@@ -1,7 +1,6 @@
 from utils.utils import change_multi_state, change_state_text, get_blur_img, footer, load_img
 from utils.utils_face_recognition import PreProcessPipeline
 from PIL import Image
-from PIL.JpegImagePlugin import JpegImageFile
 import streamlit as st
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
@@ -34,6 +33,19 @@ display_main_img = col1.empty()
 display_n_faces = col2.empty()
 
 with st.sidebar:
+    with st.expander(label='Guide info', expanded=True):
+        st.markdown('''
+        This app used to Blur wanted faces which are detected from Face Detection model.
+        <p>
+        Have <kbd>3</kbd> main steps
+        <p>
+        <kbd>Step1</kbd>: Upload an image or try with an example image
+        <p>
+        <kbd>Step2</kbd>: Processing and select wanted faces
+        <p>
+        <kbd>Step3</kbd>: Then hit summit buttin for blur process and click 'Download' for download
+        ''', unsafe_allow_html=True)
+    st.caption('You can adjust a few parameters of the model below to change the result.')
     st.subheader("Face Detect Config")
     threshold = st.slider(
         "Confidence",
@@ -138,7 +150,7 @@ def select_state() -> None:
         step_4.image(st.session_state.blur_img)
         with open(BLUR_IMG_PATH, 'rb') as file:
             btn = step_4.download_button(
-                        label="Download image",
+                        label="Download Image",
                         data=file,
                         file_name="Blur_image.jpg",
                         mime="image/png",

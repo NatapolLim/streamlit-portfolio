@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.utils import txt, txt_skills, footer, nav_page, to_bin
+from utils.utils import txt, txt_skills, footer, nav_page
 
 st.set_page_config(
     page_title="Profile Page",
@@ -62,13 +62,16 @@ st.markdown('''### Projects''')
 txt("""<p id="head_project">Video Content Analytics app</p>""", "Mar 2023")
 _, c1, c2 = st.columns((0.1,1,2))
 
-# c1.image("assets/face_blur/test_gif.GIF")
+c1.image("assets/profile/face_re_id.GIF")
 c2.markdown("""
 - Extract features from YouTube videos using Multi-Objects Tracking and predict type of contents
 - Collected Data and Fine-tuned Facenet model for main moderator detection of particular chanel
 - Display metrics which analyzed from video and analyze features in order to get insights
 """, unsafe_allow_html=True)
-# c1.button("Try App", on_click=nav_page, args=('Face_Blur',))
+
+c1.write('''[Example Video](https://natapollim-video-analytics-app-5sdi7l.streamlit.app/)''')
+c1.caption("Implementing...")
+# c1.button("Example Video Result", on_click=go_href, args=('https://natapollim-video-analytics-app-5sdi7l.streamlit.app/',))
 st.markdown("""<hr class="style2">""", unsafe_allow_html=True)
 
 
@@ -80,7 +83,7 @@ c1.image("assets/profile/face_rec_example.GIF")
 c2.markdown("""
 - Build a Face Recognition system web app using <kbd>Streamlit</kbd> framework with
 - Implemented MTCNN algorithm for Face Detection and encode face image by InceptionResNet model which pre-trained on VGGFace2 dataset
-- Compare face similarity through euclidean distance
+- Compare face similarity through euclidean distance for authenticating
 """, unsafe_allow_html=True)
 c1.button("Try App", on_click=nav_page, args=('Face_Recognition',), key='face_rec_page')
 st.markdown("""<hr class="style2">""", unsafe_allow_html=True)

@@ -52,7 +52,24 @@ if 'FR_state' not in st.session_state:
     st.session_state.FR_state = 'input'
     st.session_state.FR_img_input = 'example'
 
-# with st.sidebar:
+with st.sidebar:
+    with st.expander(label='Guide info', expanded=True):
+        st.markdown('''
+        This app have 3 features
+        - Check-In
+        - Face in Database
+        - Add Face <p>
+        
+        <kbd>Check-In</kbd>: Mock situation of already have your own face in the Database and would like to check attendance
+        <kbd>Face in Database</kbd>: Show all faces that in Database now
+        <kbd>Add Face</kbd>: Add new face in to Database
+        
+        <kbd>Example1</kbd>: you can try an example Elon or Code image which already have different face in Database
+        <p>
+        <kbd>Example2</kbd>: you can upload your image in to Add Face page and fill the name then click 'Add face'.
+        After you have added new face, you can check by upload a new image with the same person on Check-In page and click 'Process' to see the result
+        <p>
+        <kbd>Example3</kbd>: Use your webcam camera to Add Face or Check-In''', unsafe_allow_html=True)
 #     choose = option_menu(
 #         "Content",
 #         ['App','Info'],
