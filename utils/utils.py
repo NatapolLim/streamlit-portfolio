@@ -176,6 +176,11 @@ def process(_mtcnn,img, threshold=0.9):
     return probs, boxes
 
 #General
+def load_css() -> None:
+    '''open css file and activate its'''
+    with open("style.css", 'r') as file:
+        st.markdown("<style>{}</style>".format(file.read()), unsafe_allow_html=True)
+
 @st.cache_data
 def load_img(path: str) -> JpegImageFile:
     time.sleep(1)

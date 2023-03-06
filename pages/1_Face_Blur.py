@@ -39,11 +39,11 @@ with st.sidebar:
         <p>
         Have <kbd>3</kbd> main steps
         <p>
-        <kbd>Step1</kbd>: Upload an image or try with an example image
+        <kbd>Step1</kbd>: Upload an image or try with an example image.
         <p>
-        <kbd>Step2</kbd>: Processing and select wanted faces
+        <kbd>Step2</kbd>: Processing and select wanted faces.
         <p>
-        <kbd>Step3</kbd>: Then hit summit buttin for blur process and click 'Download' for download
+        <kbd>Step3</kbd>: Then hit summit buttin for blur process and click 'Download' for download.
         ''', unsafe_allow_html=True)
     st.caption('You can adjust a few parameters of the model below to change the result.')
     st.subheader("Face Detect Config")

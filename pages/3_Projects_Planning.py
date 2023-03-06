@@ -8,32 +8,36 @@ st.title('Projects Planning')
 
 st.subheader('Customer Segmentation')
 st.write('''
-- using stepper bar?
-- pandas profiling?
-- migrate from notebook
+- Migrating from notebook
 - General Questions EDA
 - Features: Cohort Analysis, RFM, Segmentation
 - Plotly Vistualization
 - Churn Prediction: modeling, tuning
 ''')
+st.caption('Implementing...')
 
-st.subheader('OCR Lisense plate or Docs')
+st.subheader('Video Content Analytics')
 st.write('''
-- Find Best Practice and fine-tuning
+- Design main algorithm
+- Preform Shot boundary detection in order to divide video into sub-videos base on cut scene
+- Test and see the result preformance of object tracking to sub-videos
+- Attemp to research scene recognition
+- Form data input for classification model to classify type of content
+- Research Multimodal: Audio and Text
 ''')
+st.caption('Implementing...')
+st.markdown('---') 
 
-st.subheader('E-commerce Chatbot')
-st.subheader('Recommendation System')
-st.subheader('Aspect-base sentiment analysis')
-st.subheader('Preform A/B testing from ? datasource')
-st.subheader('Summarize news')
-st.subheader('Text to Image')
-st.subheader('Dashboard show StockPrice? update everyday using airflow control task and perform some time-series model')
+st.subheader('Wating lists')
 st.write('''
-- Component: Airflow, Streamlit, Time-series model
-''')
-
-st.subheader('Analysis news classify type compare engagement (Social Listening)')
-st.subheader("Speech Recognition")
-st.subheader('Reinforcement Learning')
+- Preform A/B testing
+- Aspect-base sentiment analysis
+- E-commerce Chatbot
+- Recommendation System
+- OCR Lisense plate or Docs
+- Summarize news
+- Dashboard StockPrice
+- Speech Recognition
+- Reinforcement Learning
+''', unsafe_allow_html=True)
 
