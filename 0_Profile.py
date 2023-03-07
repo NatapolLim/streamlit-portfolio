@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.utils import txt, txt_skills, footer, nav_page
+from utils.utils import txt, txt_skills, footer, nav_page, nav_link
 
 st.set_page_config(
     page_title="Profile Page",
@@ -69,9 +69,9 @@ c2.markdown("""
 - Display metrics which analyzed from video and analyze features in order to get insights
 """, unsafe_allow_html=True)
 
-c1.write('''[Example Video](https://natapollim-video-analytics-app-5sdi7l.streamlit.app/)''')
+# c1.write('''[Example Video](https://natapollim-video-analytics-app-5sdi7l.streamlit.app/)''')
 c1.caption("Implementing...")
-# c1.button("Example Video Result", on_click=go_href, args=('https://natapollim-video-analytics-app-5sdi7l.streamlit.app/',))
+c1.button("Example Video", on_click=nav_link, args=('https://natapollim-video-analytics-app-5sdi7l.streamlit.app/',))
 st.markdown("""<hr class="style2">""", unsafe_allow_html=True)
 
 
@@ -122,7 +122,8 @@ c1.markdown("""
 - Visualize the top 3 category products in each segment and the correlation between category products for cross selling strategy
 - Performed <kbd>Churn prediction</kbd> model with Linear Regression model and gain the final result at 90% F1 score 
 """, unsafe_allow_html=True)
-# c1.button("Try app", on_click=nav_page, args=('Mechanical_Design',))
+# c1.write('''<button onclick="https://natapollim-retail-analytics-and--0-customer-segmentation-e6fszl.streamlit.app">HTML Tutorial</button>''', unsafe_allow_html=True)
+c1.button("Try app", on_click=nav_link, args=('https://natapollim-retail-analytics-and--0-customer-segmentation-e6fszl.streamlit.app',))
 st.markdown("""<hr class="style2">""", unsafe_allow_html=True)
 
 #Project5

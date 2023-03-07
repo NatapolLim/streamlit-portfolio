@@ -61,6 +61,21 @@ def nav_page(page_name, timeout_secs=3) -> None:
     """ % (page_name, timeout_secs)
     html(nav_script)
 
+
+def nav_link(page_name, timeout_secs=3) -> None:
+    '''Function for navigation to another page'''
+    nav_script = """
+        <script type="text/javascript">
+            function load_page(page_name) {
+                window.open(page_name, 'StreamlitTab');
+            }
+        window.addEventListener("load", function() {
+            load_page("%s");
+        });
+        </script>
+    """ % (page_name)
+    html(nav_script)
+
 def txt(a: str, b: str) -> None:
     '''Display text in specific pattern.'''
     _, col1, col2 = st.columns((0.1,4, 1))
