@@ -62,7 +62,7 @@ def nav_page(page_name, timeout_secs=3) -> None:
     html(nav_script)
 
 
-def nav_link(page_name, timeout_secs=3) -> None:
+def nav_link(page_name) -> None:
     '''Function for navigation to another page'''
     nav_script = """
         <script type="text/javascript">
