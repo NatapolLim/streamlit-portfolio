@@ -65,13 +65,14 @@ class CompareFacesPipeline:
             os.path.join(DATA_STORE_DIR, 'data_map/data_map.csv'),
             index_col=None
             )
+        self.faces_features_in_db = CompareFacesPipeline.load_tensors(self.all_faces.filename.values)
 
-    @st.cache_data
-    def load_tensors(faces_df: pd.DataFrame) -> torch.Tensor:
+    @staticmethod
+    @st.cache_resource
+    def load_tensors(filenames: List[str]) -> torch.Tensor:
         '''Cache loading tensor from db'''
         faces_features_in_db=[]
-        filenames_all_faces = faces_df['filename']
-        for file_ in filenames_all_faces:
+        for file_ in filenames:
             face_features_in_db = torch.load(file_)
             faces_features_in_db.append(face_features_in_db)
         return faces_features_in_db
@@ -79,8 +80,7 @@ class CompareFacesPipeline:
     def cal_euclidience_dis(self, face_features_: torch.Tensor) -> List:
         '''Compare and calculate the euclidence distance between specific faces.'''
         dists_=[]
-        faces_features_in_db = self.load_tensors(self.all_faces)
-        for face_features_in_db in faces_features_in_db:
+        for face_features_in_db in self.faces_features_in_db:
             dist = (face_features_-face_features_in_db).norm().item()
             dists_.append(dist)
         return dists_
