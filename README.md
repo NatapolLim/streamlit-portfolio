@@ -5,7 +5,7 @@
 In this portfolio, you will find a showcase of my data science projects and the skills I have acquired
 ### Build web app for presenting my projects
 let's try on this link
-[Streamlit Webapp](https://natapollim-streamlit-portfolio-0-profile-ayvdum.streamlit.app/Face_Blur)
+[Streamlit Webapp](https://natapollim-streamlit-portfolio-0-profile-ayvdum.streamlit.app)
 
 ## Face Blur Image
 Goal of this project is learn to use MTCNN algorothm and Streamlit framework
